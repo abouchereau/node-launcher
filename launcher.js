@@ -1,41 +1,38 @@
-const InputEvent = require('input-event');
-const input = new InputEvent('/dev/input/event0');
+//sudo apt-get install libusb-1.0 libudev-dev
+'use strict';
 
-const keyboard = new InputEvent.Keyboard(input);
-
-keyboard.on('keyup'   , console.log);
-keyboard.on('keydown' , console.log);
-keyboard.on('keypress', console.log);
-
-///const ioHook = require('iohook');
+const ioHook = require('iohook');//windows marche pas :/
 const blinkstick = require('blinkstick');
+const Launcher = require("./lib/Launcher");
+
+const F1 = 65470,
+    F2 = 65471,
+    F3 = 65472,
+    F4 = 65473,
+    F5 = 65474,
+    F6 = 65475;
 
 let leds = blinkstick.findAll();
-console.log("LEDS", leds);
-/*
-ioHook.on(' keyup', (event) => {
-    console.log(event); // { type: 'mousemove', x: 700, y: 400 }
-});
-ioHook.on(' keypress', (event) => {
-    console.log(event); // { type: 'mousemove', x: 700, y: 400 }
-});
+let launcher = new Launcher();
 
-
-// Register and start hook
-ioHook.start(false);
-*/
-
-/*
-// listen for the "keypress" event
-process.stdin.on('keypress', (ch, key) => {
-    console.log('got "keypress"', ch, key);
-    if ( key.name == 'c' && key.ctrl) {
+ioHook.on('keypress', function (msg) {
+    if (msg.rawcode == 99 && msg.ctrlKey) {//Ctrl + C
+        console.log("EXIT");
+        ioHook.unload();
         process.exit();
     }
-
+    if (msg.rawcode == F1) {
+        launcher.startVolcaDrumHidControl((m)=> {
+            onVolcaDrumHidControlMessage(m);
+        });
+    }
 });
- */
+ioHook.start();
 process.stdin.setRawMode(true);
-process.stdin.resume();
+
+
+function onVolcaDrumHidControlMessage(m) {
+    console.log("Hello",m);
+}
 
 

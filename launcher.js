@@ -2,8 +2,9 @@
 'use strict';
 
 const ioHook = require('iohook');//windows marche pas :/
-const blinkstick = require('blinkstick');
-const Launcher = require("./lib/Launcher");
+const AppManager = require("./lib/AppManager");
+const EventManager = require("./lib/EventManager");
+
 
 const F1 = 65470,
     F2 = 65471,
@@ -12,8 +13,9 @@ const F1 = 65470,
     F5 = 65474,
     F6 = 65475;
 
-let leds = blinkstick.findAll();
-let launcher = new Launcher();
+
+let am = new AppManager();
+let em = new EventManager();
 
 ioHook.on('keypress', function (msg) {
     if (msg.rawcode == 99 && msg.ctrlKey) {//Ctrl + C
@@ -22,17 +24,12 @@ ioHook.on('keypress', function (msg) {
         process.exit();
     }
     if (msg.rawcode == F1) {
-        launcher.startVolcaDrumHidControl((m)=> {
-            onVolcaDrumHidControlMessage(m);
+        am.startVolcaDrumHidControl((m)=> {
+            em.onVolcaDrumHidControlMessage(m);
         });
     }
 });
 ioHook.start();
 process.stdin.setRawMode(true);
-
-
-function onVolcaDrumHidControlMessage(m) {
-    console.log("Hello",m);
-}
 
 

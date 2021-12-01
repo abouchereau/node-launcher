@@ -4,7 +4,7 @@
 const ioHook = require('iohook');//windows marche pas :/
 const AppManager = require("./lib/AppManager");
 const EventManager = require("./lib/EventManager");
-
+const clc = require('cli-color');
 
 const F1 = 65470,
     F2 = 65471,
@@ -13,6 +13,13 @@ const F1 = 65470,
     F5 = 65474,
     F6 = 65475;
 
+let controls = [
+    ["F1","volca-drum-hid-control"],
+    ["F2","record-audio"],
+] ;
+process.stdout.write(clc.bold("dO_ob"));
+console.log("");
+process.stdout.write(clc.columns(controls));
 
 let am = new AppManager();
 let em = new EventManager();

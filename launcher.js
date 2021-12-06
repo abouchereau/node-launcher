@@ -20,6 +20,7 @@ console.log("");
 process.stdout.write(clc.columns([
     ["F1","volca-drum-hid-control"],
     ["F2","record-audio"],
+    ["F3","tbm-output-audio-level"],
 ]));
 console.log("");
 
@@ -47,6 +48,12 @@ ioHook.on('keypress', function (msg) {
     if (msg.rawcode == F2) {
         am.startStopRecordAudio((m) => {
             em.onStartStopRecordAudioMessage(m);
+        });
+    }
+
+    if (msg.rawcode == F3) {
+        am.startTbmOutputAudioLevel((m) => {
+            em.onTbmOutputAudioLeveloMessage(m);
         });
     }
 

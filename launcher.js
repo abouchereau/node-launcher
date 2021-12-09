@@ -11,7 +11,9 @@ const F1 = 65470,
     F3 = 65472,
     F4 = 65473,
     F5 = 65474,
-    F6 = 65475;
+    F6 = 65475,
+    F7 = 65476,
+    F8 = 65477;
 
 
 process.stdout.write(clc.bold("dO_ob Tony-b Machine"));
@@ -37,6 +39,9 @@ ioHook.on('keypress', function (msg) {
 
     if ([F1,F2,F3,F4,F5,F6].includes(msg.rawcode)) {
         em.ld.stopTurnOnDemo();
+    }
+    if ([F8].includes(msg.rawcode)) {
+        em.ld.stopTurnOnDemo(true);
     }
 
     if (msg.rawcode == F1) {

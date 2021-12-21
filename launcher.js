@@ -68,3 +68,28 @@ ioHook.start();
 process.stdin.setRawMode(true);
 
 
+/*
+const HID = require('node-hid');
+var devices = HID.devices();
+
+let vendorId = null;
+let productId = null;
+
+for(let device of devices) {
+	if (device["product"].indexOf("Keyboard")>-1) {
+		vendorId = device["vendorId"];
+		productId = device["productId"];
+	}
+}
+console.log(vendorId, productId);
+if (vendorId != null) {
+	let device = new HID.HID(vendorId,productId);
+	device.on('data',(a)=>{
+		let tab = Array.prototype.slice.call(a);
+		console.log("DATA",tab[2]);
+	});
+}
+
+
+
+ */

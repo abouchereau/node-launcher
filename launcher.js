@@ -23,7 +23,7 @@ let vendorId = null;
 let productId = null;
 
 for(let device of devices) {
-    if (device["product"].indexOf("Keyboard")>-1) {
+    if (device["product"].indexOf("Keyboard")>-1 ||  device["product"].indexOf("2.4G")>-1) {
         vendorId = device["vendorId"];
         productId = device["productId"];
     }

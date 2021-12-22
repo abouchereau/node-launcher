@@ -1,19 +1,40 @@
 //sudo apt-get install libusb-1.0 libudev-dev
 'use strict';
 
-const ioHook = require('iohook');//windows marche pas :/
+const HID = require('node-hid');
 const AppManager = require("./lib/AppManager");
 const EventManager = require("./lib/EventManager");
 const clc = require('cli-color');
 
-const F1 = 65470,
-    F2 = 65471,
-    F3 = 65472,
-    F4 = 65473,
-    F5 = 65474,
-    F6 = 65475,
-    F7 = 65476,
-    F8 = 65477;
+const F1 = 58,
+    F2 = 59,
+    F3 = 60,
+    F4 = 61,
+    F5 = 62,
+    F6 = 63,
+    F7 = 64,
+    F8 = 65;
+
+
+
+let devices = HID.devices();
+
+let vendorId = null;
+let productId = null;
+
+for(let device of devices) {
+    if (device["product"].indexOf("Keyboard")>-1) {
+        vendorId = device["vendorId"];
+        productId = device["productId"];
+    }
+}
+console.log(vendorId, productId);
+if (vendorId == null) {
+    console.log("No Keyboard detected");
+    process.exit();
+}
+
+let device = new HID.HID(vendorId,productId);
 
 
 process.stdout.write(clc.bold("dO_ob Tony-b Machine"));
@@ -29,45 +50,48 @@ console.log("");
 let am = new AppManager();
 let em = new EventManager();
 
-ioHook.on('keypress', function (msg) {
+device.on('data',(a)=>{
+    let tab = Array.prototype.slice.call(a);
+    let key = tab[2];
+    console.log("DATA",tab[2]);
 
-    if (msg.rawcode == 99 && msg.ctrlKey) {//Ctrl + C
+   /* if (msg.rawcode == 99 && msg.ctrlKey) {//Ctrl + C
         console.log("EXIT");
         ioHook.unload();
         process.exit();
-    }
+    }*/
 
-    if ([F1,F2,F3,F4,F5,F6].includes(msg.rawcode)) {
+    if ([F1,F2,F3,F4,F5,F6].includes(key)) {
         em.ld.stopTurnOnDemo();
     }
-    if ([F8].includes(msg.rawcode)) {
+    if ([F8].includes(key)) {
         em.ld.stopTurnOnDemo(true);
     }
 
-    if (msg.rawcode == F1) {
+    if (key == F1) {
         am.startVolcaDrumHidControl((m)=> {
             em.onVolcaDrumHidControlMessage(m);
         });
     }
 
-    if (msg.rawcode == F2) {
+    if (key == F2) {
         am.startStopRecordAudio((m) => {
             em.onStartStopRecordAudioMessage(m);
         });
     }
 
-    if (msg.rawcode == F3) {
+    if (key == F3) {
         am.startTbmOutputAudioLevel((m) => {
             em.onTbmOutputAudioLeveloMessage(m);
         });
     }
 
 });
-
+/*
 ioHook.start();
 process.stdin.setRawMode(true);
 
-
+*/
 /*
 const HID = require('node-hid');
 var devices = HID.devices();

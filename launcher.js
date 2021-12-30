@@ -14,7 +14,11 @@ const C = 6,
     F5 = 62,
     F6 = 63,
     F7 = 64,
-    F8 = 65;
+    F8 = 65,
+    F9 = 66,
+    F10 = 67,
+    F11 = 68,
+    F12 = 69;
 
 
 process.stdout.write(clc.bold("dO_ob Tony-b Machine"));
@@ -63,9 +67,7 @@ device.on('data',(a)=>{
     if ([F1,F2,F3,F4,F5,F6].includes(key)) {
         em.ld.stopTurnOnDemo();
     }
-    if ([F8].includes(key)) {
-        em.ld.stopTurnOnDemo(true);
-    }
+
 
     if (key == F1) {
         am.startVolcaDrumHidControl((m)=> {
@@ -84,6 +86,19 @@ device.on('data',(a)=>{
             em.onTbmOutputAudioLeveloMessage(m);
         });
     }
+
+    if ([F8].includes(key)) {
+        em.ld.stopTurnOnDemo(true);
+    }
+
+    if (key == F11) {
+        am.restart();
+    }
+
+    if (key == F12) {
+        am.shutdown();
+    }
+
 
 });
 process.stdin.setRawMode(true);

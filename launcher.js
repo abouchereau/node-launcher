@@ -76,6 +76,7 @@ device.on('data',(a)=>{
     }
 
     if (key == F2) {
+        //TODo : vérifier qu'un device PnP est branché
         am.startStopRecordAudio((m) => {
             em.onStartStopRecordAudioMessage(m);
         });
